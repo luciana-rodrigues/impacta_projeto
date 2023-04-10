@@ -1,0 +1,14 @@
+# Arquivos gerados automaticamente
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.db
+
+# Ambiente virtual
+venv/
+
+# Arquivo de configuração .env
+.env
