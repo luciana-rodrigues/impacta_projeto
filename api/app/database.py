@@ -7,14 +7,14 @@ from dotenv import load_dotenv
 load_dotenv()  # carrega as variáveis do arquivo .env
 
 # Carrega as variáveis de ambiente
-DB_USERNAME = os.getenv('DB_USERNAME')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-DB_HOST = os.getenv('DB_HOST')
-DB_PORT = os.getenv('DB_PORT')
-DB_NAME = os.getenv('DB_NAME')
+DB_USERNAME = os.getenv('POSTGRES_USER')
+DB_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+DB_HOST = os.getenv('POSTGRES_HOST')
+DB_PORT = os.getenv('POSTGRES_PORT')
+DB_NAME = os.getenv('POSTGRES_DB')
 
 # Cria a string de conexão com o banco de dados
-SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 
 # Cria o engine do banco de dados
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

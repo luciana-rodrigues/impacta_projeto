@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  fastapi:
+    build: ./api
+    ports:
+      - "8000:80"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clients
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    networks:
+      - env
+    depends_on:
+      - db
+  db:
+    image: postgis/postgis
+    environment:
+      POSTGRES_HOST: mypostgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clients
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - env
+networks:
+  env:

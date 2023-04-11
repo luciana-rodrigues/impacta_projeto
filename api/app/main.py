@@ -13,17 +13,16 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# CONECTA E RECONECTA AO BANCO DE DADOS
-while True:
-    try:
-        conn = psycopg2.connect(host='localhost', database='impacta_api', user='postgres', password='adminlu', cursor_factory=RealDictCursor)
-        cursor = conn.cursor()
-        print("Database connection was successfull!")
-        break
-    except Exception as error:
-        print("Connecting to database failed.")
-        print(f"Error: {error}")
-        time.sleep(2)
+# while True:
+#     try:
+#         conn = psycopg2.connect(host='DB_HOST', database='DB_NAME', user='DB_USERNAME', password='DB_PASSWORD', cursor_factory=RealDictCursor)
+#         cursor = conn.cursor()
+#         print("Database connection was successfull!")
+#         break
+#     except Exception as error:
+#         print("Connecting to database failed.")
+#         print(f"Error: {error}")
+#         time.sleep(2)
 
 # ENDPOINTS
 
@@ -64,7 +63,7 @@ def get_client_by_name(nome: str, db: Session = Depends(get_db)):
     client = db.query(models.Client).filter(models.Client.nome.ilike(f'%{nome}%')).all()
 
     if not client:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"O cliente com nome: {nome} não foi encontrado.")
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=f"O cliente com nome: {nome} não foi encontrado.")
     return client
 
 # BUSCA CLIENTE PELO SOBRENOME
