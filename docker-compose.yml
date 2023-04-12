@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  db:
+    container_name: db
+    image: postgis/postgis
+    environment:
+      POSTGRES_HOST: mypostgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clients
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - env
+
+  fastapi:
+    container_name: api
+    build: ./api
+    ports:
+      - "8000:80"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clients
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    networks:
+      - env
+    depends_on:
+      - db
+
+  front:
+    container_name: front
+    build: ./front
+    volumes:
+      - ./front/src:/app/src
+    ports:
+      - 3000:3000
+    networks:
+      - env
+    depends_on:
+      - db
+      - fastapi
+
+networks:
+  env:
