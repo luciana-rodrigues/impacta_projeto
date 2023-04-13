@@ -8,6 +8,7 @@ import time
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .database import engine, get_db
+from datetime import datetime, date
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -104,3 +105,55 @@ def update_client(id: int, client: schemas.ClientCreate, db: Session = Depends(g
     db.commit()
 
     return client_query.first()
+
+
+
+# LISTA CLIENTES PELA DATA DE DECLARAÇÃO DE IR - TENTATIVAS
+############################################### 
+@app.get("/clients/nome/{data_ir}")
+def get_client_by_data_ir(data_ir: str, db: Session = Depends(get_db)):
+    client = db.query(models.Client).filter(models.Client.data_ir.ilike(f'%{data_ir}%')).all()
+
+    if not client:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"O cliente com data de declaração: {data_ir} não foi encontrado.")
+    return client
+###############################################
+@app.get("/clients/pending", response_model=List[schemas.Client])
+def get_clients_pending(db: Session = Depends(get_db)):
+    clients = db.query(models.Client).all()
+    current_year = date.today().year
+    clients_before_current_year = []
+    for client in clients:
+        if datetime.strptime(client.data_ir, '%Y-%m-%d').year < current_year:
+            clients_before_current_year.append(client)
+    return clients_before_current_year
+###############################################
+@app.get("/clients/teste", response_model=List[schemas.Client])
+def get_old_clients(db: Session = Depends(get_db)):
+    clients = db.query(models.Client).all()
+
+    format = '%Y-%m-%d'
+    
+    old_clients = []
+    for client in clients:
+        datetime = datetime.strptime(client.data_ir, format)
+        if client.data_ir:
+            data_ir = datetime.date()
+            if data_ir.year < datetime.now().year:
+                old_clients.append(client)
+    
+    return old_clients
+###############################################
+# TENTANDO EXTRAIR APENAS O ANO EM FORMATO STR MESMO E DEPOIS CONVERTER PARA INTEIRO E FAZER A COMPARAÇÃO COM O ANO ATUAL
+@app.get("/clients/pendings", response_model=List[schemas.Client])
+def get_clients_pending(db: Session = Depends(get_db)):
+    clients = db.query(models.Client).all()
+    current_year = date.today().year
+    current_year_int = int(current_year)
+    clients_before_current_year = []
+    for client in clients:
+        year = int(client.data_ir[:4]) # extrai apenas o ano da data_ir e converte para int
+        if year < current_year_int:
+            clients_before_current_year.append(client)
+    return clients_before_current_year
+###############################################
