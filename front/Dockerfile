@@ -4,7 +4,7 @@ WORKDIR /app
 # Cache and Install dependencies
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci
+RUN npm i
 # Copy app files
 COPY . .
 # Expose port
