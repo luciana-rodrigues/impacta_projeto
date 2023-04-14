@@ -1,1 +1,17 @@
 import axios from 'axios'
+
+const client = axios.create({
+    baseURL: 'http://localhost:8000',
+})
+
+const ClientService = {
+    insert: payload => client.post(`/clients`, payload),
+    getAll: () => client.get(`/clients`),
+    updateById: (id, payload) => client.put(`/clients/${id}`, payload),
+    deleteById: id => client.delete(`/clients/${id}`)
+}
+
+export default ClientService
+
+
+
