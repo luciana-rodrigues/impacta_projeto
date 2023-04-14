@@ -11,7 +11,7 @@ function App() {
   return (
     <div>
       { toast && <Toaster text={toast.text} color={toast.color} onClose={() => setToast(false)} /> }
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '20px', alignContent: 'center', justifyContent: "center", display: "flex"}}>
         <New onSuccess={response => setToast(response)} /> 
       </div>
     </div>
