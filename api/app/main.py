@@ -8,21 +8,21 @@ import time
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .database import engine, get_db
+from fastapi.middleware.cors import CORSMiddleware
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# while True:
-#     try:
-#         conn = psycopg2.connect(host='DB_HOST', database='DB_NAME', user='DB_USERNAME', password='DB_PASSWORD', cursor_factory=RealDictCursor)
-#         cursor = conn.cursor()
-#         print("Database connection was successfull!")
-#         break
-#     except Exception as error:
-#         print("Connecting to database failed.")
-#         print(f"Error: {error}")
-#         time.sleep(2)
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ENDPOINTS
 
