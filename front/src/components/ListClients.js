@@ -13,16 +13,6 @@ import { Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
-function createData(
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-) {
-    return { name, calories, fat, carbs, protein };
-}
-
 const getData = async () => {
     const clients = await ClientService.getAll()
     return clients.data
@@ -57,8 +47,10 @@ export default function DenseTable() {
                                     <TableCell align="right"><b>Sobrenome</b></TableCell>
                                     <TableCell align="right"><b>Data Nasc.</b></TableCell>
                                     <TableCell align="right"><b>Telefone</b></TableCell>
-                                    <TableCell align="right"><b>email</b></TableCell>
+                                    <TableCell align="right"><b>E-mail</b></TableCell>
                                     <TableCell align="right"><b>Data IR</b></TableCell>
+                                    <TableCell align="right"><b>Editar</b></TableCell>
+                                    <TableCell align="right"><b>Excluir</b></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -75,6 +67,8 @@ export default function DenseTable() {
                                         <TableCell align="right">{row.telefone}</TableCell>
                                         <TableCell align="right">{row.email}</TableCell>
                                         <TableCell align="right">{row.data_ir}</TableCell>
+                                        <TableCell align="right">Editar</TableCell>
+                                        <TableCell align="right">Excluir</TableCell>
 
                                     </TableRow>
                                 ))}

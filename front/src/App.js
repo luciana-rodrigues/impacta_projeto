@@ -6,13 +6,17 @@ import { Toaster } from './toaster'
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListClients from './components/ListClients'
-import { Container } from "@mui/material";
+import CardsTotals from './components/CardsTotals'
+import { Container, Grid } from "@mui/material";
 
 function App() {
   const [toast, setToast] = useState(false)
 
   return (
     <Container>
+
+      <CardsTotals></CardsTotals>
+      
       {toast && <Toaster text={toast.text} color={toast.color} onClose={() => setToast(false)} />}
       <div style={{ padding: '20px', alignContent: 'center', justifyContent: "center", display: "flex" }}>
         
@@ -31,3 +35,5 @@ function App() {
 }
 
 export default App;
+
+
