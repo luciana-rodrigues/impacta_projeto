@@ -8,7 +8,7 @@ export function Toaster(props) {
     })
 
     return (
-        <div style={{ backgroundColor: props.color || '#f2f2f2', padding: '10px 20px', textAlign: 'center' }}>
+        <div style={{ color: "white",  backgroundColor: props.color || '#f2f2f2', padding: '10px 20px', textAlign: 'center' }}>
             { props.text }
         </div>
     )

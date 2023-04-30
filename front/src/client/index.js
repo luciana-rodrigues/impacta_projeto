@@ -1,1 +1,1 @@
-export { New } from './New.js'
+export { New } from '../components/New.js'

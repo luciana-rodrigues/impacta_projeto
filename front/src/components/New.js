@@ -1,38 +1,32 @@
-import { Grid, Button, Paper, Avatar, FormControl, InputLabel, Input, FormLabel } from "@mui/material";
+import { Grid, Button, Avatar, FormControl, InputLabel, Input, FormLabel } from "@mui/material";
 
-import ClientService from "./client.service";
+import ClientService from "../client/client.service";
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const avatarStyle = {
   backgroundColor: "#4133a6",
 };
 
 export function New(props) {
+  const navigate = useNavigate();
+  
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = data => {
     ClientService.insert(data)
       .then(() => {
         props.onSuccess({ text: "Cliente cadastrado com sucesso!", color: 'green' });
+        ClientService.getAll().then(r => props.setRows(r.data))
       })
       .catch(e => {
         props.onSuccess({ text: "Erro ao cadastrar cliente!", color: 'red' })
       });
+      navigate('/')
   }
 
   return (
-    <Paper
-      elevation={20}
-      align="center"
-
-      sx={{
-        padding: 2,
-        margin: 2,
-        maxWidth: 1200,
-        backgroundColor: "rgba(0,0,0,0.05",
-      }}
-    >
+<>
       <Avatar style={avatarStyle}></Avatar>
       <h1>Cadastro de Clientes</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,6 +96,6 @@ export function New(props) {
         </Grid>
 
       </form>
-    </Paper>
+    </>
   )
 }
