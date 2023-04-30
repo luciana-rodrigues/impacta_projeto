@@ -37,6 +37,12 @@ def get_clientes(db: Session = Depends(get_db)):
     clients = db.query(models.Client).all()
     return clients
 
+# CONTA TOTAL DE CLIENTES
+@app.get("/clients/total")
+def get_clients_count(db: Session = Depends(get_db)):
+    count = db.query(models.Client).count()
+    return {"Total de clientes": count}
+
 # CADASTRA CLIENTE
 @app.post("/clients", status_code=status.HTTP_201_CREATED, response_model=schemas.Client)
 def create_clients(new_client: schemas.ClientCreate, db: Session = Depends(get_db)):
@@ -103,3 +109,8 @@ def update_client(id: int, client: schemas.ClientCreate, db: Session = Depends(g
     db.commit()
 
     return client_query.first()
+
+
+
+
+

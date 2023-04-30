@@ -7,6 +7,7 @@ const client = axios.create({
 const ClientService = {
     insert: payload => client.post(`/clients`, payload),
     getAll: () => client.get(`/clients`),
+    getById: (id) => client.get(`/clients/${id}`),
     updateById: (id, payload) => client.put(`/clients/${id}`, payload),
     deleteById: id => client.delete(`/clients/${id}`)
 }
