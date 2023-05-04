@@ -1,25 +1,41 @@
 import * as React from 'react';
-import { useState } from 'react'
+
+import { Button, FormControl, Grid, Input, InputLabel } from '@mui/material';
+
+import ClientService from "../client/client.service";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Edit from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useState } from 'react'
 
-import { Button, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
-import Edit from '@mui/icons-material/Edit';
-
-
-export default function DenseTable({ rows, handleClickDelete }) {
+export default function DenseTable({ rows, handleClickDelete, setRows }) {
     const [edit, toogleEdit] = useState(false)
+    
+    const [search, setSearch] = useState('')
+
+    const doSearch = async () => {
+        const { data: results } = await ClientService.search(search)
+        setRows(results)
+    }
+
     return (
         <>
             <Grid container spacing={3} >
                 <Grid item xs={12}>
+                    <div style={{ display: 'flex', gap: '12px', padding: '8px', marginBottom: '24px' }}>
+                        <FormControl fullWidth >
+                            <InputLabel >Busca por nome e/ou sobrenome</InputLabel>
+                            <Input type="search" onChange={event => setSearch(event.target.value)} value={search}  />
+                        </FormControl>
+                        <Button onClick={doSearch} type="submit" variant="contained" color="primary" >Buscar</Button>
+                    </div>
                     <TableContainer component={Paper} spacing={2}>
                         <Table sx={{ minWidth: 650 }} size="small" aria-label="a  table">
                             <TableHead>

@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Toaster } from './toaster'
-import { Editar } from './components/'
-import { New } from './components/'
-import ListClients from './components/ListClients'
-import CardsTotals from './components/CardsTotals'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Container, Paper } from "@mui/material";
-import ClientService from "./client/client.service";
+import React, { useEffect, useState } from "react";
+
 import Button from '@mui/material/Button';
+import CardsTotals from './components/CardsTotals'
+import ClientService from "./client/client.service";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Editar } from './components/'
+import ListClients from './components/ListClients'
+import { New } from './components/'
+import { Toaster } from './toaster'
 
 const getData = async () => {
   const clients = await ClientService.getAll()
@@ -57,8 +58,6 @@ function App() {
       });
   }
 
-
-
   useEffect(() => {
     getData().then(
       result => setRows(result)
@@ -93,7 +92,6 @@ function App() {
       <Paper
         elevation={20}
         align="center"
-
         sx={{
           padding: 2,
           margin: 2,
@@ -101,20 +99,13 @@ function App() {
           backgroundColor: "rgba(0,0,0,0.05",
         }}
       >
-
-
         <CardsTotals rows={rows} ></CardsTotals>
-        <div style={{ padding: '20px', alignContent: 'center', justifyContent: "center", display: "flex" }}>
-        
-        </div>
+        <div style={{ padding: '20px', alignContent: 'center', justifyContent: "center", display: "flex" }}></div>
         <BrowserRouter>
           <Routes>
             <Route path="add" element={<New onSuccess={response => setToast(response)} setRows={r => setRows(r)} />} />
             <Route path="edit/:id" element={<Editar rows={rows} onSuccess={response => setToast(response)} setRows={r => setRows(r)}/>} />
-            
-            <Route path="/" element={<ListClients rows={rows} handleClickDelete={(id, nome) => handleClickDelete(id, nome)} user={rows[0]}></ListClients>}>
-
-            </Route>
+            <Route path="/" element={<ListClients rows={rows} handleClickDelete={(id, nome) => handleClickDelete(id, nome)} user={rows[0]} setRows={r => setRows(r)}></ListClients>} />
           </Routes>
         </BrowserRouter>
       </Paper>
