@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button, FormControl, Grid, Input, InputLabel } from '@mui/material';
+import { Button, FormControl, Grid, Input, InputLabel, Typography } from '@mui/material';
 
 import ClientService from "../client/client.service";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -17,12 +17,23 @@ import { useState } from 'react'
 
 export default function DenseTable({ rows, handleClickDelete, setRows }) {
     const [edit, toogleEdit] = useState(false)
-    
+    const [filtered, setFiltered] = useState(false)
     const [search, setSearch] = useState('')
 
     const doSearch = async () => {
         const { data: results } = await ClientService.search(search)
-        setRows(results)
+        if(results.length > 0) setRows(results)
+        else setRows([])
+        setFiltered(true)
+    }
+
+
+    const clearSearch = async () => {
+        const { data: results } = await ClientService.getAll()
+        if(results.length > 0) setRows(results)
+        else setRows([])
+        setSearch('')
+        setFiltered(false)
     }
 
     return (
@@ -32,9 +43,13 @@ export default function DenseTable({ rows, handleClickDelete, setRows }) {
                     <div style={{ display: 'flex', gap: '12px', padding: '8px', marginBottom: '24px' }}>
                         <FormControl fullWidth >
                             <InputLabel >Busca por nome e/ou sobrenome</InputLabel>
-                            <Input type="search" onChange={event => setSearch(event.target.value)} value={search}  />
+                            <Input type="search" onChange={event => setSearch(event.target.value)} value={search} margin="dense"/>
                         </FormControl>
-                        <Button onClick={doSearch} type="submit" variant="contained" color="primary" >Buscar</Button>
+                        <Button onClick={doSearch} type="submit" variant="contained" color="primary" size="small" >Buscar</Button>
+                        {filtered ?
+                        <Button onClick={clearSearch} type="submit" variant="contained" color="error" size="small" >Limpar</Button>
+                        :  ""  
+                    }
                     </div>
                     <TableContainer component={Paper} spacing={2}>
                         <Table sx={{ minWidth: 650 }} size="small" aria-label="a  table">
@@ -73,6 +88,7 @@ export default function DenseTable({ rows, handleClickDelete, setRows }) {
                                 ))}
                             </TableBody>
                         </Table>
+                        {rows.length <= 0 ? <Typography>Não há clientes cadastrados{filtered? " para o nome pesquisado" : ""}.</Typography>: ""}
                     </TableContainer>
                 </Grid>
                 <Grid item>
