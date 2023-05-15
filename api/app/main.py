@@ -6,6 +6,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from . import models, schemas
 from .database import engine, get_db
 from fastapi.middleware.cors import CORSMiddleware
@@ -63,22 +64,13 @@ def get_client(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"O cliente com id: {id} não foi encontrado.")
     return client
 
-# BUSCA CLIENTE PELO NOME
+
+# BUSCA CLIENTE PELO NOME OU SOBRENOME
 @app.get("/clients/nome/{nome}")
 def get_client_by_name(nome: str, db: Session = Depends(get_db)):
-    client = db.query(models.Client).filter(models.Client.nome.ilike(f'%{nome}%')).all()
-
+    client = db.query(models.Client).filter(or_(models.Client.nome.ilike(f'%{nome}%'), models.Client.sobrenome.ilike(f'%{nome}%'))).all()
     if not client:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail=f"O cliente com nome: {nome} não foi encontrado.")
-    return client
-
-# BUSCA CLIENTE PELO SOBRENOME
-@app.get("/clients/sobrenome/{sobrenome}")
-def get_client_by_surname(sobrenome: str, db: Session = Depends(get_db)):
-    client = db.query(models.Client).filter(models.Client.sobrenome.ilike(f'%{sobrenome}%')).all()
-
-    if not client:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"O cliente com nome: {sobrenome} não foi encontrado.")
     return client
 
 # EXCLUI CLIENTE
@@ -109,8 +101,4 @@ def update_client(id: int, client: schemas.ClientCreate, db: Session = Depends(g
     db.commit()
 
     return client_query.first()
-
-
-
-
-
+    
