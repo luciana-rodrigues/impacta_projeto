@@ -23,39 +23,39 @@ export default function BasicCard({rows}) {
   return (
     <Grid container spacing={3}>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Card>
           <CardContent>
             <Typography variant="h4" component="div">
             <strong>{numbers.total}</strong>
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography color="text.secondary">
               <strong>Total de Clientes</strong>
             </Typography>
           </CardContent>
         </Card>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Card>
           <CardContent>
             <Typography variant="h4" component="div" color="green">
             <strong>{numbers.declared}</strong>
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography color="text.secondary">
               <strong>IR já declarado este ano</strong>
             </Typography>
           </CardContent>
         </Card>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Card>
           <CardContent>
             <Typography variant="h4" component="div" color="orange">
             <strong>{numbers.notDeclared}</strong>
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography color="text.secondary">
               <strong>IR não declarado este ano</strong>
             </Typography>
           </CardContent>
