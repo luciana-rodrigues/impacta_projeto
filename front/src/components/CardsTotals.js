@@ -24,7 +24,7 @@ export default function BasicCard({rows}) {
     <Grid container spacing={3}>
 
       <Grid item xs={4}>
-        <Card sx={{ minWidth: 275 }}>
+        <Card>
           <CardContent>
             <Typography variant="h4" component="div">
             <strong>{numbers.total}</strong>
@@ -37,7 +37,7 @@ export default function BasicCard({rows}) {
       </Grid>
 
       <Grid item xs={4}>
-        <Card sx={{ minWidth: 275 }}>
+        <Card>
           <CardContent>
             <Typography variant="h4" component="div" color="green">
             <strong>{numbers.declared}</strong>
@@ -50,7 +50,7 @@ export default function BasicCard({rows}) {
       </Grid>
 
       <Grid item xs={4}>
-        <Card sx={{ minWidth: 275 }}>
+        <Card>
           <CardContent>
             <Typography variant="h4" component="div" color="orange">
             <strong>{numbers.notDeclared}</strong>
